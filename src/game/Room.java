@@ -17,11 +17,16 @@ import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
+/**
+ * A panel containing the main playing area.
+ * 
+ */
 
 public class Room extends JPanel {
 
     public static final int ROOM_WIDTH = 800;
     public static final int ROOM_HEIGHT = 600;
+    private static final long serialVersionUID = 1L;
     
     private final Image backgroundImage;
     
@@ -33,7 +38,9 @@ public class Room extends JPanel {
     
     private final int DELAY = 90;
     
-    // initial positions of flies
+    /**
+     * initial positions of flies
+     */
     private final int[][] pos = {
         {2380, 429}, {2500, 359}, {1380, 389}, {1580, 109}, {580, 339}, {1080, 339},
         {1590, 259}, {1560, 450}, {1590, 350}, {1580, 209}, {960, 545}, {910, 120}
@@ -42,6 +49,7 @@ public class Room extends JPanel {
     public Room() throws Exception {
         
         timer = new Timer(DELAY, new ActionListener() {
+            @Override
             public void actionPerformed(ActionEvent e) {
                tick();
             }
@@ -63,16 +71,18 @@ public class Room extends JPanel {
         // all the drawing from this component will be done in an offscreen painting buffer. 
         setDoubleBuffered(true);
 
-        // loop background music
+        /**
+         * loop background music
+         */
         SoundClip.loopBackgroundMusic();
         
         student = new Student(30, 480);
-        furniture = new Furniture();
+        furniture = new Furniture();     
+        initMushrooms();  
         initFlies();
-        initMushrooms();                   
     }
      
-    public void initFlies() {       
+    private void initFlies() {       
         flies = new ArrayList<>();
 
         for (int[] p : pos) {
@@ -80,16 +90,20 @@ public class Room extends JPanel {
         }
     }
     
-     public void initMushrooms() {       
+    private void initMushrooms() {       
         mushrooms = new ArrayList<>();
 
         for (int i = 1; i < 10; i++) {
             mushrooms.add(new Mushroom((int) (600 * Math.random() + 70), (int) ( 500 * Math.random() + 50)));
         }
     }
- 
-    //wywoływana automatycznie, gdy potrzeba narysować jakąś część aplikacji
-    //nie należy wywoływać samodzielnie
+    
+    /**
+     *  wywoływana automatycznie, gdy potrzeba narysować jakąś część aplikacji
+     *  nie należy wywoływać samodzielnie
+     * @param g 
+     */
+   
     @Override
     public void paintComponent(Graphics g) {
         
@@ -99,7 +113,13 @@ public class Room extends JPanel {
 
         Toolkit.getDefaultToolkit().sync();
     }
-
+    
+    /**
+     * Draws background image, furniture, stats, the character, mushrooms
+     * and flies.
+     * 
+     * @param g 
+     */
     private void doDrawing(Graphics g) {
 
         Graphics2D g2d = (Graphics2D) g;
@@ -107,7 +127,7 @@ public class Room extends JPanel {
         // boolean Graphics.drawImage(Image img, int x, int y, ImageObserver observer) observer usually null
         g2d.drawImage(backgroundImage, 0, 0, null);
         
-        // draw furniture
+        // draws furniture
         g2d.drawImage(furniture.getDoor().getImage(), furniture.getDoor().getX(), furniture.getDoor().getY(), this);
         g2d.drawImage(furniture.getBed().getImage(), furniture.getBed().getX(), furniture.getBed().getY(), this);
         g2d.drawImage(furniture.getLamp().getImage(), furniture.getLamp().getX(), furniture.getLamp().getY(), this);
@@ -117,7 +137,7 @@ public class Room extends JPanel {
         g2d.drawImage(furniture.getDesk().getImage(), furniture.getDesk().getX(), furniture.getDesk().getY(), this);   
         g2d.drawImage(furniture.getComputer().getImage(), furniture.getComputer().getX(), furniture.getComputer().getY(), this);   
        
-        // draw stats
+        // draws stats
         Font font = new Font("Helvetica", Font.BOLD, 18);
         g.setFont(font);
         g.setColor(Color.BLACK);
@@ -127,26 +147,28 @@ public class Room extends JPanel {
         g.drawString("Knowledge: " + student.getKnowledgeScore(), ROOM_WIDTH - 350, 40);
         g.drawString("Flies: " + flies.size(), ROOM_WIDTH - 350, 60);
     
-        // draw the character
+        // draws the character
         g2d.drawImage(student.getImage(), student.getX(), student.getY(), this);
         
-        // draw flies
-        for (Fly fly : flies) {
-            if (fly.isVisible()) {
-                g.drawImage(fly.getImage(), fly.getX(), fly.getY(), this);
-            }
-        }
-        
-        // draw mushrooms
+        // draws mushrooms
         for (Mushroom mushroom : mushrooms) {
             if (mushroom.isVisible()) {
                 g.drawImage(mushroom.getImage(), mushroom.getX(), mushroom.getY(), this);
             }
-        }     
+        } 
+        
+        // draws flies
+        for (Fly fly : flies) {
+            if (fly.isVisible()) {
+                g.drawImage(fly.getImage(), fly.getX(), fly.getY(), this);
+            }
+        }        
     }
-      
-     public void tick() {        
-        // gets called every DELAY ms
+    
+    /**
+     * gets called every DELAY ms
+     */
+    public void tick() {        
         student.move();
         student.updateStats();
 
@@ -154,20 +176,22 @@ public class Room extends JPanel {
         updateFlies();
         updateMushrooms();
         
-        // repaint() wywołoje metody paintComponent() wszystkich komponentóœ
-        // Repaints this component. Inherited from Component.
+        /**
+         * repaint() wywołoje metody paintComponent() wszystkich komponentóœ
+         * Repaints this component. Inherited from Component.
+         */
         repaint();
     }
      
     private void updateFlies() {
-         if (flies.size() == 0)
+         if (flies.isEmpty())
             initFlies();
+         
         for (int i = 0; i < flies.size(); i++) {
             if (flies.get(i).isVisible()) {
-                flies.get(i).move();
-            } else {
+                flies.get(i).move();              
+            } else
                 flies.remove(i);
-            }
         }
     }
     
@@ -205,7 +229,9 @@ public class Room extends JPanel {
         }        
     }
     
-    // An abstract adapter class for receiving keyboard events. Implements KeyListener. 
+    /**
+     * An adapter class for receiving keyboard events. Implements KeyListener.
+     */ 
     private class GameKeyAdapter extends KeyAdapter {
 
         @Override

@@ -9,8 +9,10 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
 /**
- *
- * @author z3nd0g
+ * The main class of the package. Contains the event dispatching thread.
+ * 
+ * @author Bogdan Król
+ * 
  */
 
 public class Game implements Runnable {
@@ -21,12 +23,17 @@ public class Game implements Runnable {
         final JFrame frame = new JFrame("Room");
         frame.setLocation(20, 20);
         
-        // Card Layout for the Welcome Screen, Game, High Scores & Instructions
+        /**
+         * Card Layout for the main screen. High Scores and Instructions 
+         * can be added later.
+         */
         final CardLayout cl = new CardLayout();
         final JPanel contentPanel = new JPanel(cl);
         frame.add(contentPanel, BorderLayout.CENTER);
         
-        // Main playing area
+        /**
+         * Main playing area.
+         */
         final Room room;                
         try {
             room = new Room();

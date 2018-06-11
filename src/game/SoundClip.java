@@ -3,8 +3,17 @@ package game;
 import java.io.*;
 import javax.sound.sampled.*;
 
+/**
+ * Responsible for playing all sounds in the game.
+ * 
+ */
+
 public class SoundClip {
 
+    /**
+     * Used for looping sounds.
+     */
+    
     public static void loopBackgroundMusic() {
         try {
             // Open an audio input stream.           
@@ -21,6 +30,11 @@ public class SoundClip {
         }
     }
     
+    /**
+     * Used for short sounds.
+     * 
+     * @param fileName 
+     */
     public static void play(String fileName) {
         try {
             // Open an audio input stream.
@@ -34,12 +48,8 @@ public class SoundClip {
             // Open audio clip and load samples from the audio input stream.
             clip.open(audioIn);
             clip.start();
-        } catch (UnsupportedAudioFileException e) {
+        } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
             e.printStackTrace();
-        } catch (IOException e) {
-           e.printStackTrace();
-        } catch (LineUnavailableException e) {
-           e.printStackTrace();
         }       
     }
 }

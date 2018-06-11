@@ -6,6 +6,11 @@ import javax.swing.ImageIcon;
 import static game.Room.ROOM_WIDTH;
 import static game.Room.ROOM_HEIGHT;
 
+/**
+ * Class for the main character.
+ * 
+ */
+
 public class Student extends Sprite {
     
     private int studentVelocity;
@@ -29,6 +34,7 @@ public class Student extends Sprite {
     private long clock;
     private long timeInBed;
     private long timeInToilet;
+    private long timeByComputer;
     
     private boolean computerOn = false;
     private boolean toiletFlushed = false;
@@ -64,6 +70,7 @@ public class Student extends Sprite {
         clock = 0;
         timeInBed = 0;
         timeInToilet = 0;
+        timeByComputer = 0;
         
         computer = new Computer();
     }
@@ -91,6 +98,11 @@ public class Student extends Sprite {
         }        
     }
     
+    /**
+     * Determines the movement and behaviour of the main character.
+     * Determines how the character's image, stats and speed change
+     * depending on his position in the room
+     */
     public void move() {
         
         // Print current position
@@ -133,7 +145,7 @@ public class Student extends Sprite {
         }
         
         // Lying in bed
-        if (x < 55 && y <5) {
+        if (x < 53 && y <5) {
             if (timeInBed == 0)
                 clock = System.nanoTime();
             
@@ -154,7 +166,7 @@ public class Student extends Sprite {
         } else gotSleep = false;       
         
         // Toilet break
-        if (y > 150 && y < 190 && x < 40) {
+        if (y > 150 && y < 190 && x < 38) {
             if (timeInToilet == 0)
                 clock = System.nanoTime();
             
@@ -174,7 +186,17 @@ public class Student extends Sprite {
         } else toiletFlushed = false;
         
         // By computer
-        if (y > 70 && y < 120 && x > (ROOM_WIDTH - width - 35)) {
+        if (y > 70 && y < 120 && x > (ROOM_WIDTH - width - 33)) {
+            
+            if (timeByComputer == 0)
+                clock = System.nanoTime();
+            
+            timeByComputer = System.nanoTime() - clock;
+            
+            if (timeByComputer> 2000000000) {
+                knowledgeScore += 1;
+                timeByComputer = 0;
+            }
             
             currentImage = imagePlayerByComputer;
             x = ROOM_WIDTH - width - 30;

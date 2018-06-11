@@ -4,9 +4,20 @@ import java.awt.Image;
 import java.awt.Rectangle;
 import javax.swing.ImageIcon;
 
-public class Sprite {
+/**
+ * Super class used for the main character, mushrooms and flies,
+ * as well as for furniture.
+ * 
+ */
 
+public class Sprite {
+    /**
+     * X-coordinate of character's position
+     */
     protected int x;
+    /**
+     * Y-coordinate of character's position
+     */
     protected int y;
     protected int velocityX;
     protected int velocityY;
@@ -24,7 +35,11 @@ public class Sprite {
         visible = true;
     }
     
-    // conctructor for furniture
+    /**
+     * conctructor for furniture
+     * 
+     * @param imageName 
+     */
     Sprite (String imageName) {
         this.x = 0;
         this.y = 0;

@@ -1,7 +1,13 @@
 package game;
 
+/**
+ * The look and movement of the fly sprite.
+ */
 public class Fly extends Sprite {
 
+    /**
+     * X-coordinate for a fly, after it reaches end of screen.
+     */
     private final int INITIAL_X = 850;
 
     public Fly(int x, int y) {

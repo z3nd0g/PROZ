@@ -3,6 +3,11 @@ package game;
 import static game.Room.ROOM_WIDTH;
 import static game.Room.ROOM_HEIGHT;
 
+/**
+ * Contains all furniture drawn in the room.
+ * 
+ */
+
 public class Furniture {
     
     private final Sprite door;
